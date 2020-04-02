@@ -1,11 +1,11 @@
-import { shallow } from "enzyme";
-import React from "react";
+import { shallow } from 'enzyme';
+import React from 'react';
 
-import Home from "../pages/index.js";
+import Home from '../pages/index';
 
-describe("With Enzyme", () => {
-  it("Home component shows Surveillo", () => {
+describe('With Enzyme', () => {
+  it('Home component shows Surveillo', () => {
     const app = shallow(<Home />);
-    expect(app.find("h1").text()).toEqual("Surveillo");
+    expect(app.find('h1').text()).toEqual('Surveillo');
   });
 });
