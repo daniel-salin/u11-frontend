@@ -1,0 +1,26 @@
+{
+  "name": "u11-fullstack-js-daniel-salin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chas-academy/u11-fullstack-js-daniel-salin.git"
+  },
+  "author": "daniel salin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chas-academy/u11-fullstack-js-daniel-salin/issues"
+  },
+  "homepage": "https://github.com/chas-academy/u11-fullstack-js-daniel-salin#readme",
+  "dependencies": {
+    "next": "^9.3.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
