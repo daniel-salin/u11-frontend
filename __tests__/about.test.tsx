@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
+import '../setupTests';
 
 import About from '../pages/about';
 
