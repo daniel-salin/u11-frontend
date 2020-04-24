@@ -5,8 +5,13 @@ import '../setupTests';
 import About from '../pages/about';
 
 describe('With Enzyme', () => {
+  let wrapper: ShallowWrapper;
+
+  beforeEach(() => {
+    wrapper = shallow(<About />);
+  });
+
   it('About component shows About Page header', () => {
-    const app = shallow(<About />);
-    expect(app.find('h1').text()).toEqual('About Page');
+    expect(wrapper.find('h1').text()).toEqual('About Page');
   });
 });
