@@ -31,6 +31,11 @@
   },
   "plugins": ["react", "jest", "@typescript-eslint"],
   "rules": {
+    "jsx-a11y/anchor-is-valid": ["error", {
+      "components": ["Link"],
+      "specialLink": ["hrefLeft", "hrefRight"],
+      "aspects": ["invalidHref", "preferButton"]
+    }],
     "react/jsx-props-no-spreading": 0,
     "import/no-named-as-default": 0,
     "react/react-in-jsx-scope": "off",
