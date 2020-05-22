@@ -1,3 +1,8 @@
-const About: React.FunctionComponent = () => <h1>About Page</h1>;
+import Layout from '../components/Layout';
 
+const About: React.FunctionComponent = () => (
+  <Layout title="About">
+    <h1>What is Surveillo?</h1>
+  </Layout>
+);
 export default About;
