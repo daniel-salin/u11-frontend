@@ -1,5 +1,6 @@
-import { Typography, Grid, Link } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Layout from '../components/Layout';
 
 const useStyles = makeStyles({
   container: {
@@ -22,38 +23,26 @@ const useStyles = makeStyles({
     animationDirection: 'alternate',
     display: 'block',
     margin: 'auto',
+    width: '50%',
+    height: 'auto',
   },
 });
 
-type HomeProps = {
-  title: string;
-};
-
-const Home: React.FunctionComponent<HomeProps> = ({ title }) => {
+const Home: React.FunctionComponent = () => {
   const classes = useStyles();
   return (
-    <Grid className={classes.container} container spacing={4}>
-      <Grid item xs={12}>
-        <Typography variant="h1" className={classes.header}>
-          Surveillo
-        </Typography>
-        <Grid container>
-          <Grid item xs={6}>
-            <Typography variant="h5" className={classes.header}>
-              <Link href="/about">About</Link>
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography variant="h5" className={classes.header}>
-              <Link href="/">Home</Link>
-            </Typography>
-          </Grid>
+    <Layout title="Hme">
+      <Grid className={classes.container} container spacing={4}>
+        <Grid item xs={12}>
+          <Typography variant="h1" className={classes.header}>
+            Surveillo
+          </Typography>
+        </Grid>
+        <Grid justify="center" item xs={6}>
+          <img className={classes.image} src="/logo.png" alt="logo" />
         </Grid>
       </Grid>
-      <Grid justify="center" item xs={6}>
-        <img className={classes.image} src="/logo.png" alt="logo" />
-      </Grid>
-    </Grid>
+    </Layout>
   );
 };
 export default Home;
