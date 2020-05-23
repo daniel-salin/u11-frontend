@@ -31,8 +31,8 @@ const useStyles = makeStyles({
 const Home: React.FunctionComponent = () => {
   const classes = useStyles();
   return (
-    <Layout title="Hme">
-      <Grid className={classes.container} container spacing={4}>
+    <Layout title="Home">
+      <Grid className={classes.container} container>
         <Grid item xs={12}>
           <Typography variant="h1" className={classes.header}>
             Surveillo
