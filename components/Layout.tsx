@@ -2,6 +2,7 @@
 
 import Head from 'next/head';
 import Link from 'next/link';
+import { Typography } from '@material-ui/core';
 
 type LayoutProps = {
   title?: string;
@@ -30,10 +31,14 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, title }) => (
     <header>
       <nav>
         <Link href="/">
-          <a style={linkStyle}>Home</a>
+          <a style={linkStyle}>
+            <Typography variant="body1">Home</Typography>
+          </a>
         </Link>{' '}
         <Link href="/about">
-          <a style={linkStyle}>About</a>
+          <a style={linkStyle}>
+            <Typography variant="body1">About</Typography>
+          </a>
         </Link>{' '}
       </nav>
     </header>
