@@ -1,4 +1,5 @@
 import { AppProps } from 'next/app';
+import { Auth0Provider } from 'use-auth0-hooks';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,7 +15,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Component {...pageProps} />
+        <Auth0Provider
+          domain="dango.eu.auth0.com"
+          clientId="Wf26uWirC6WNAbtkD1P0jk3S4fVNeqEg"
+          redirectUri="http://localhost:3000"
+        >
+          <Component {...pageProps} />
+        </Auth0Provider>
       </ThemeProvider>
     </>
   );
