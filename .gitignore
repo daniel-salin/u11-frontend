@@ -2,3 +2,6 @@ node_modules
 .next
 .eslintcache
 *.bak
+docs
+assets
+.DS_Store
