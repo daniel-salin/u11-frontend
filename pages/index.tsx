@@ -35,7 +35,7 @@ const Home: React.FunctionComponent = () => {
       <Grid className={classes.container} container>
         <Grid item xs={12}>
           <Typography variant="h1" className={classes.header}>
-            Surveillo
+            Surveillo - welcome {process.env.USER_NAME}
           </Typography>
         </Grid>
         <Grid justify="center" item xs={6}>
