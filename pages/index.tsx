@@ -1,5 +1,6 @@
 import { Typography, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useAuth } from 'react-use-auth';
 import Layout from '../components/Layout';
 
 const useStyles = makeStyles({
@@ -30,12 +31,14 @@ const useStyles = makeStyles({
 
 const Home: React.FunctionComponent = () => {
   const classes = useStyles();
+  const { isAuthenticated, user, authResult } = useAuth();
+
   return (
     <Layout title="Home">
       <Grid className={classes.container} container>
         <Grid item xs={12}>
           <Typography variant="h1" className={classes.header}>
-            Surveillo
+            {isAuthenticated() ? `Welcome ${user.name}` : 'Surveillo'}
           </Typography>
         </Grid>
         <Grid justify="center" item xs={6}>
