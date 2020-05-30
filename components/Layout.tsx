@@ -40,6 +40,11 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, title }) => (
             <Typography variant="body1">About</Typography>
           </a>
         </Link>{' '}
+        <Link href="/login">
+          <a style={linkStyle}>
+            <Typography variant="body1">Login</Typography>
+          </a>
+        </Link>{' '}
       </nav>
     </header>
     {children}
