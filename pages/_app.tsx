@@ -1,22 +1,31 @@
 import { AppProps } from 'next/app';
-// import { Auth0Provider } from 'use-auth0-hooks';
-import { AuthProvider } from 'react-use-auth';
+import { AuthProvider, useAuth } from 'react-use-auth';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useRouter } from 'next/router';
 import theme from '../styles/theme';
 
+export interface Params {
+  domain: string | undefined;
+  clientID: string | undefined;
+  redirectUri: string | undefined;
+  audience: string | undefined;
+  responseType: string | undefined;
+  scope: string | undefined;
+}
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
+  const { authResult } = useAuth();
 
-  const params = {
+  const params: Params = {
     domain: process.env.AUTH_0_DOMAIN,
     clientID: process.env.AUTH_0_CLIENT_ID,
     redirectUri: process.env.AUTH_0_REDIRECT_URI,
     audience: process.env.AUTH_0_AUDIENCE,
     responseType: process.env.AUTH_0_RESPONSE_TYPE,
-    scope: '',
+    scope: 'openid profile email',
   };
 
   return (
@@ -30,10 +39,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <CssBaseline />
         <AuthProvider
           navigate={router.push}
-          auth0_audience_domain=""
-          auth0_params={params}
-          auth0_domain="dango.eu.auth0.com"
-          auth0_client_id="Wf26uWirC6WNAbtkD1P0jk3S4fVNeqEg"
+          auth0_audience_domain={params.audience!}
+          auth0_params={params!}
+          auth0_domain={params.domain!}
+          auth0_client_id={params.clientID!}
           customPropertyNamespace=""
         >
           <Component {...pageProps} />
@@ -42,4 +51,5 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     </>
   );
 };
+
 export default MyApp;
