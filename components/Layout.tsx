@@ -2,6 +2,7 @@
 
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Typography } from '@material-ui/core';
 import { useAuth } from 'react-use-auth';
 import CustomButton from './CustomButton';
@@ -13,18 +14,28 @@ const layoutStyle = {
   margin: 20,
   padding: 20,
   border: '1px solid #DDD',
-  borderRadius: '10px',
+  borderRadius: '0.9em',
+  justifyContent: 'center',
+  alignItems: 'center',
 };
 
-const linkStyle = {
+const linkStyleInactive = {
   color: 'white',
   textDecoration: 'none',
   fontSize: '2em',
-  marginRight: '1em',
+  marginRight: '0.5em',
+};
+
+const linkStyleActive = {
+  color: 'red',
+  textDecoration: 'none',
+  fontSize: '2em',
+  marginRight: '0.5em',
 };
 
 const Layout: React.FunctionComponent<LayoutProps> = ({ children, title }) => {
   const { isAuthenticated, login, logout } = useAuth();
+  const router = useRouter();
   return (
     <div style={layoutStyle}>
       <Head>
@@ -33,32 +44,38 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, title }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <header>
-        <nav style={{ display: 'flex' }}>
-          <Link href="/">
-            <a style={linkStyle}>
-              <Typography variant="body1">Home</Typography>
-            </a>
-          </Link>{' '}
-          <Link href="/about">
-            <a style={linkStyle}>
-              <Typography variant="body1">About</Typography>
-            </a>
-          </Link>{' '}
-          {isAuthenticated() && (
-            <Link href="/logs">
-              <a style={linkStyle}>
-                <Typography variant="body1">Log</Typography>
+        <nav style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Link href="/">
+              <a style={router.pathname === '/' ? linkStyleActive : linkStyleInactive}>
+                <Typography variant="body1">Home</Typography>
               </a>
-            </Link>
-          )}{' '}
+            </Link>{' '}
+            <Link href="/about">
+              <a style={router.pathname === '/about' ? linkStyleActive : linkStyleInactive}>
+                <Typography variant="body1">About</Typography>
+              </a>
+            </Link>{' '}
+            {isAuthenticated() && (
+              <Link href="/logs">
+                <a style={router.pathname === '/logs' ? linkStyleActive : linkStyleInactive}>
+                  <Typography variant="body1">Log</Typography>
+                </a>
+              </Link>
+            )}{' '}
+          </div>
           {isAuthenticated() ? (
-            <CustomButton onClick={logout}>
-              <Typography variant="body1">Logout</Typography>
-            </CustomButton>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <CustomButton onClick={logout}>
+                <Typography variant="body1">Logout</Typography>
+              </CustomButton>
+            </div>
           ) : (
-            <CustomButton onClick={login}>
-              <Typography variant="body1">Login</Typography>
-            </CustomButton>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <CustomButton onClick={login}>
+                <Typography variant="body1">Login</Typography>
+              </CustomButton>
+            </div>
           )}
         </nav>
       </header>
