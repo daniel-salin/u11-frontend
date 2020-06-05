@@ -7,8 +7,9 @@ import Layout from '../components/Layout';
 
 const Auth0Callback: React.FunctionComponent = () => {
   const { handleAuthentication } = useAuth();
+
   useEffect(() => {
-    handleAuthentication({ postLoginRoute: '/' });
+    handleAuthentication({ postLoginRoute: '/fetchData' });
   }, []);
 
   return (
