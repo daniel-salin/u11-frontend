@@ -1,4 +1,4 @@
-const reducer = (state: State = {}, action: AnyAction) => {
+const reducer = (state = {}, action: any) => {
   switch (action.type) {
     case 'HYDRATE':
       // Attention! This will overwrite client state! Real apps should use proper reconciliation.
