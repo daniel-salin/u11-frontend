@@ -47,39 +47,43 @@ const Logs = ({ logs, error }: LogProps) => {
 
   return (
     <Layout title="Logs">
-      {logs.map((log) => {
-        return (
-          <>
-            <ExpansionPanel style={{ margin: '1em 0' }}>
-              <ExpansionPanelSummary aria-controls="panel1a-content" id="panel1a-header">
-                <Typography>{log.date}</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <TableContainer style={{ margin: '1em 0' }} component={Paper}>
-                  <Table className={classes.table} aria-label="customized table">
-                    <TableHead>
-                      <TableRow>
-                        <StyledTableCell>Time Stamp</StyledTableCell>
-                        <StyledTableCell>Path</StyledTableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {log.images.map((img: any) => (
-                        <StyledTableRow key={img.timestamp}>
-                          <StyledTableCell component="th" scope="row">
-                            {img.timeStamp}
-                          </StyledTableCell>
-                          <StyledTableCell>{img.path}</StyledTableCell>
-                        </StyledTableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </>
-        );
-      })}
+      {logs ? (
+        logs?.map((log) => {
+          return (
+            <>
+              <ExpansionPanel style={{ margin: '1em 0' }}>
+                <ExpansionPanelSummary aria-controls="panel1a-content" id="panel1a-header">
+                  <Typography>{log.date}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <TableContainer style={{ margin: '1em 0' }} component={Paper}>
+                    <Table className={classes.table} aria-label="customized table">
+                      <TableHead>
+                        <TableRow>
+                          <StyledTableCell>Time Stamp</StyledTableCell>
+                          <StyledTableCell>Path</StyledTableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {log.images?.map((img: any) => (
+                          <StyledTableRow key={img.timestamp}>
+                            <StyledTableCell component="th" scope="row">
+                              {img.timeStamp}
+                            </StyledTableCell>
+                            <StyledTableCell>{img.path}</StyledTableCell>
+                          </StyledTableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            </>
+          );
+        })
+      ) : (
+        <Typography>No Logs Available</Typography>
+      )}
     </Layout>
   );
 };
