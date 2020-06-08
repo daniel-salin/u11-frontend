@@ -1,6 +1,6 @@
 import React from 'react';
-import fetch from 'isomorphic-fetch';
 import { Typography } from '@material-ui/core';
+import Link from 'next/link';
 import { connect } from 'react-redux';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -14,11 +14,6 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Layout from '../components/Layout';
-
-export interface LogProps {
-  logs: Log[];
-  error: string | null;
-}
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -68,7 +63,14 @@ const Logs = ({ logs, error }: LogProps) => {
                         {log.images?.map((img: any) => (
                           <StyledTableRow key={img.timestamp}>
                             <StyledTableCell component="th" scope="row">
-                              {img.timeStamp}
+                              <Link
+                                href={{
+                                  pathname: '/image',
+                                  query: { path: `${img.path}` },
+                                }}
+                              >
+                                <a>{img.timeStamp}</a>
+                              </Link>
                             </StyledTableCell>
                             <StyledTableCell>{img.path}</StyledTableCell>
                           </StyledTableRow>
@@ -88,6 +90,11 @@ const Logs = ({ logs, error }: LogProps) => {
   );
 };
 
+export interface LogProps {
+  logs: Log[];
+  error: string | null;
+}
+
 export interface Log {
   date: string;
   images: LogImages[];
@@ -98,7 +105,12 @@ export interface LogImages {
   path: string;
 }
 
-const mapStateToProps = (state: any) => {
+export interface State {
+  logs: { logs: Log[] };
+  error: string;
+}
+
+const mapStateToProps = (state: State) => {
   return {
     logs: state.logs.logs,
     error: state.error,
@@ -106,22 +118,3 @@ const mapStateToProps = (state: any) => {
 };
 
 export default connect(mapStateToProps, null)(Logs);
-
-// <div>
-//     <Typography variant="h5">{log.date}</Typography>
-//     {log.images.length > 0 && <Typography variant="h3">Image Files Available</Typography>}
-//     {log.images.map((img: any) => (
-//       <div
-//         style={{
-//           border: '1px solid white',
-//           borderRadius: '20px',
-//           padding: '10px',
-//           marginBottom: '10px'
-//         }}
-//       >
-//         <p>
-//           <strong>{img.timeStamp}</strong> : {img.path}
-//         </p>
-//       </div>
-//     ))}
-//   </div>
