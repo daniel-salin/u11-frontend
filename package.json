@@ -33,9 +33,14 @@
     "dotenv": "^8.2.0",
     "isomorphic-fetch": "^2.2.1",
     "next": "^9.3.2",
+    "next-redux-wrapper": "^6.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
     "react-use-auth": "^0.7.3",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.1"
   },
   "devDependencies": {
@@ -48,6 +53,7 @@
     "@testing-library/jest-dom": "^5.3.0",
     "@testing-library/react": "^10.0.2",
     "@types/jest": "^25.2.1",
+    "@types/react-redux": "^7.1.9",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "babel-jest": "^25.2.6",
