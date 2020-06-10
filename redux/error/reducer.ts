@@ -5,6 +5,8 @@ const reducer = (state = { message: '', error: false }, action: any) => {
       return { ...state, ...action.payload };
     case 'ERROR':
       return { ...state, message: action.payload, error: true };
+    case 'CLEAR_ERROR':
+      return { ...state, message: '', error: false };
     default:
       return state;
   }
