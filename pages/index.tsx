@@ -1,8 +1,6 @@
 import { Typography, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAuth } from 'react-use-auth';
-import { connect } from 'react-redux';
-import { useEffect } from 'react';
 import Layout from '../components/Layout';
 
 const useStyles = makeStyles({
@@ -30,17 +28,9 @@ const useStyles = makeStyles({
     height: 'auto',
   },
 });
-const Home: React.FunctionComponent = ({ loginUser, logoutUser }: any) => {
+const Home: React.FunctionComponent = () => {
   const classes = useStyles();
-  const { isAuthenticated, user, authResult } = useAuth();
-
-  useEffect(() => {
-    if (isAuthenticated()) {
-      loginUser(authResult?.accessToken);
-    } else {
-      logoutUser();
-    }
-  }, []);
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <Layout title="Home">
@@ -58,13 +48,4 @@ const Home: React.FunctionComponent = ({ loginUser, logoutUser }: any) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: any) => ({
-  loginUser: (accessToken: string) => {
-    dispatch({ type: 'LOGIN_USER', payload: accessToken });
-  },
-  logoutUser: () => {
-    dispatch({ type: 'LOGOUT_USER', payload: null });
-  },
-});
-
-export default connect(undefined, mapDispatchToProps)(Home);
+export default Home;
