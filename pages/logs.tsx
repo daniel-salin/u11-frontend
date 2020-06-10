@@ -69,7 +69,9 @@ const Logs = ({ logs, error }: LogProps) => {
                                   query: { path: `${img.path}` },
                                 }}
                               >
-                                <a>{img.timeStamp}</a>
+                                <a style={{ color: 'red', textDecoration: 'none' }}>
+                                  {img.timeStamp}
+                                </a>
                               </Link>
                             </StyledTableCell>
                             <StyledTableCell>{img.path}</StyledTableCell>
