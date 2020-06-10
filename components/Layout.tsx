@@ -3,12 +3,17 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Typography } from '@material-ui/core';
+import { Typography, Button, Grid } from '@material-ui/core';
 import { useAuth } from 'react-use-auth';
+import { connect } from 'react-redux';
 import CustomButton from './CustomButton';
 
 type LayoutProps = {
+  children?: any;
   title?: string;
+  clearError?: any;
+  error?: boolean;
+  errorMessage?: string;
 };
 const layoutStyle = {
   margin: 20,
@@ -33,7 +38,22 @@ const linkStyleActive = {
   marginRight: '0.5em',
 };
 
-const Layout: React.FunctionComponent<LayoutProps> = ({ children, title }) => {
+const errorContainer = {
+  border: '1px solid #DDD',
+  borderRadius: '0.9em',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '1em',
+  marginBottom: '1em',
+};
+
+const Layout: React.FunctionComponent<LayoutProps> = ({
+  children,
+  title,
+  clearError,
+  error,
+  errorMessage,
+}) => {
   const { isAuthenticated, login, logout } = useAuth();
   const router = useRouter();
   return (
@@ -44,6 +64,18 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, title }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <header>
+        {error && (
+          <Grid container style={errorContainer}>
+            <Grid container justify="center" alignItems="center">
+              <Typography variant="h6">{errorMessage}</Typography>
+            </Grid>
+            <Grid container xs={12} justify="center" alignItems="center">
+              <Button variant="contained" color="primary" onClick={clearError}>
+                Ok
+              </Button>
+            </Grid>
+          </Grid>
+        )}
         <nav style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <Link href="/">
@@ -83,4 +115,24 @@ const Layout: React.FunctionComponent<LayoutProps> = ({ children, title }) => {
     </div>
   );
 };
-export default Layout;
+
+const mapStateToProps = (state: any) => {
+  return {
+    error: state.error.error,
+    errorMessage: state.error.message,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => ({
+  loginUser: (accessToken: string) => {
+    dispatch({ type: 'LOGIN_USER', payload: accessToken });
+  },
+  logoutUser: () => {
+    dispatch({ type: 'LOGOUT_USER', payload: null });
+  },
+  clearError: () => {
+    dispatch({ type: 'CLEAR_ERROR', payload: null });
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);
