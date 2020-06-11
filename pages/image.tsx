@@ -1,8 +1,8 @@
-import { NextPage } from 'next';
+import { NextPage, NextPageContext } from 'next';
 import fetch from 'isomorphic-fetch';
 import { useEffect, useState } from 'react';
 import { Typography, Grid, Button, makeStyles } from '@material-ui/core';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import { connect } from 'react-redux';
 import Layout from '../components/Layout';
 
@@ -15,23 +15,21 @@ const useStyles = makeStyles({
     height: 'auto',
   },
 });
-
-const Image: NextPage<ImageProps> = ({ accessToken }) => {
-  const { query } = useRouter();
-
+// @ts-ignore
+const Image: NextPage<ImageProps> = ({ url, accessToken }) => {
   const classes = useStyles();
   const [image, setImage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
-    const fetchImage = async (url: string) => {
+    const fetchImage = async (fetchUrl: string) => {
       const myHeaders = new Headers();
       myHeaders.append('Authorization', `Bearer ${accessToken}`);
       const requestOptions = {
         method: 'GET',
         headers: myHeaders,
       };
-      const imageSource: string | null = await fetch(url, requestOptions)
+      const imageSource: string | null = await fetch(fetchUrl, requestOptions)
         .then((response: Response) => response.blob())
         .then((result: Blob) => URL.createObjectURL(result))
         .catch((error: Error) => {
@@ -42,11 +40,7 @@ const Image: NextPage<ImageProps> = ({ accessToken }) => {
       if (imageSource) setImage(imageSource);
     };
 
-    if (query.path) {
-      const imagePath: string = query.path.toString().replace('.jpg', '').replace('/', '__');
-      const url = `${process.env?.AUTH_0_AUDIENCE}/images/${imagePath}`;
-      fetchImage(url);
-    }
+    fetchImage(url);
   }, []);
 
   return (
@@ -74,10 +68,21 @@ const Image: NextPage<ImageProps> = ({ accessToken }) => {
   );
 };
 
-export interface ImageProps {
+// @ts-ignore
+Image.getInitialProps = async (context: NextPageContext) => {
+  if (context.query.path) {
+    const imagePath = context.query.path.toString().replace('.jpg', '').replace('/', '__');
+    const url = `${process.env.AUTH_0_AUDIENCE}/images/${imagePath}`;
+    return { url };
+  }
+  return {};
+};
+
+export interface ImageProps extends NextPageContext {
   accessToken: string;
   image: string;
   errorMessage?: string;
+  url: string;
 }
 
 export interface State {
