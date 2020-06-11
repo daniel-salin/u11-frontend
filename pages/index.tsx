@@ -1,6 +1,7 @@
 import { Typography, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAuth } from 'react-use-auth';
+import { NextPage } from 'next';
 import Layout from '../components/Layout';
 
 const useStyles = makeStyles({
@@ -28,7 +29,7 @@ const useStyles = makeStyles({
     height: 'auto',
   },
 });
-const Home: React.FunctionComponent = () => {
+const Home: NextPage = () => {
   const classes = useStyles();
   const { isAuthenticated, user } = useAuth();
 

@@ -1,13 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Dispatch } from 'react';
 import { useAuth } from 'react-use-auth';
 import { Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { useRouter } from 'next/router';
+import { NextPage } from 'next';
 import Layout from '../components/Layout';
 
 export interface LogProps {
   logs: Log[];
   error: string | null;
+  addLogs: AddLogs;
+  addError: AddError;
+  loginUser: LoginUser;
+  logoutUser: LogoutUser;
+}
+
+export interface AddLogs {
+  (logs: Log): void;
+}
+export interface AddError {
+  (error: string): void;
+}
+export interface LoginUser {
+  (accessToken: string): void;
+}
+export interface LogoutUser {
+  (): void;
 }
 
 export interface Log {
@@ -20,12 +38,7 @@ export interface LogImages {
   path: string;
 }
 
-const FetchData: React.FunctionComponent<{
-  addLogs: any;
-  addError: any;
-  loginUser: any;
-  logoutUser: any;
-}> = ({ addLogs, addError, loginUser, logoutUser }) => {
+const FetchData: NextPage<LogProps> = ({ addLogs, addError, loginUser, logoutUser }) => {
   const { authResult, isAuthenticated } = useAuth();
   const router = useRouter();
 
@@ -64,23 +77,31 @@ const FetchData: React.FunctionComponent<{
   );
 };
 
-const mapStateToProps = (state: any) => {
+export interface State {
+  user: {
+    accessToken: string;
+  };
+}
+
+const mapStateToProps = (state: State) => {
   return {
     accessToken: state.user,
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => ({
-  loginUser: (accessToken: string) => {
+const mapDispatchToProps = (
+  dispatch: Dispatch<{ type: string; payload?: Log | string | null }>
+) => ({
+  loginUser: (accessToken: string): void => {
     dispatch({ type: 'LOGIN_USER', payload: accessToken });
   },
-  logoutUser: () => {
+  logoutUser: (): void => {
     dispatch({ type: 'LOGOUT_USER', payload: null });
   },
-  addLogs: (logs: any) => {
+  addLogs: (logs: Log): void => {
     dispatch({ type: 'ADD_LOGS', payload: logs });
   },
-  addError: (error: string) => {
+  addError: (error: string): void => {
     dispatch({ type: 'ERROR', payload: error });
   },
 });

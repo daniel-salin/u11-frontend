@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import { NextPage } from 'next';
 import Layout from '../components/Layout';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -34,10 +35,19 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const useStyles = makeStyles({
-  table: {},
+  expansionPanel: {
+    margin: '1em 0',
+  },
+  tableContainer: {
+    margin: '1em 0',
+  },
+  linkText: {
+    color: 'red',
+    textDecoration: 'none',
+  },
 });
 
-const Logs = ({ logs, error }: LogProps) => {
+const Logs: NextPage<LogProps> = ({ logs }) => {
   const classes = useStyles();
 
   return (
@@ -46,13 +56,13 @@ const Logs = ({ logs, error }: LogProps) => {
         logs?.map((log) => {
           return (
             <>
-              <ExpansionPanel style={{ margin: '1em 0' }}>
+              <ExpansionPanel className={classes.expansionPanel}>
                 <ExpansionPanelSummary aria-controls="panel1a-content" id="panel1a-header">
                   <Typography>{log.date}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                  <TableContainer style={{ margin: '1em 0' }} component={Paper}>
-                    <Table className={classes.table} aria-label="customized table">
+                  <TableContainer className={classes.tableContainer} component={Paper}>
+                    <Table aria-label="customized table">
                       <TableHead>
                         <TableRow>
                           <StyledTableCell>Time Stamp</StyledTableCell>
@@ -69,9 +79,7 @@ const Logs = ({ logs, error }: LogProps) => {
                                   query: { path: `${img.path}` },
                                 }}
                               >
-                                <a style={{ color: 'red', textDecoration: 'none' }}>
-                                  {img.timeStamp}
-                                </a>
+                                <a className={classes.linkText}>{img.timeStamp}</a>
                               </Link>
                             </StyledTableCell>
                             <StyledTableCell>{img.path}</StyledTableCell>
@@ -86,7 +94,7 @@ const Logs = ({ logs, error }: LogProps) => {
           );
         })
       ) : (
-        <Typography>No Logs Available</Typography>
+        <Typography variant="h3">No Logs Available</Typography>
       )}
     </Layout>
   );
@@ -94,7 +102,6 @@ const Logs = ({ logs, error }: LogProps) => {
 
 export interface LogProps {
   logs: Log[];
-  error: string | null;
 }
 
 export interface Log {
@@ -109,13 +116,11 @@ export interface LogImages {
 
 export interface State {
   logs: { logs: Log[] };
-  error: string;
 }
 
 const mapStateToProps = (state: State) => {
   return {
     logs: state.logs.logs,
-    error: state.error,
   };
 };
 
