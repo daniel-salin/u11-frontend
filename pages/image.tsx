@@ -1,8 +1,8 @@
-import { NextPage, NextPageContext } from 'next';
+import { NextPage } from 'next';
 import fetch from 'isomorphic-fetch';
 import { useEffect, useState } from 'react';
 import { Typography, Grid, Button, makeStyles } from '@material-ui/core';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import Layout from '../components/Layout';
 
@@ -16,26 +16,37 @@ const useStyles = makeStyles({
   },
 });
 
-const Image: NextPage<ImageProps> = ({ url, accessToken }) => {
+const Image: NextPage<ImageProps> = ({ accessToken }) => {
+  const { query } = useRouter();
+
   const classes = useStyles();
-  const [image, setImage] = useState<any>('');
+  const [image, setImage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
-    const fetchImage = async () => {
+    const fetchImage = async (url: string) => {
       const myHeaders = new Headers();
       myHeaders.append('Authorization', `Bearer ${accessToken}`);
       const requestOptions = {
         method: 'GET',
         headers: myHeaders,
       };
-      const imageBody = await fetch(url, requestOptions)
-        .then((response: any) => response.blob())
-        .then((result: any) => URL.createObjectURL(result))
-        .catch((error: any) => setErrorMessage(error.message));
-      setImage(imageBody);
+      const imageSource: string | null = await fetch(url, requestOptions)
+        .then((response: Response) => response.blob())
+        .then((result: Blob) => URL.createObjectURL(result))
+        .catch((error: Error) => {
+          setErrorMessage(error.message);
+          return null;
+        });
+
+      if (imageSource) setImage(imageSource);
     };
-    fetchImage();
+
+    if (query.path) {
+      const imagePath: string = query.path.toString().replace('.jpg', '').replace('/', '__');
+      const url = `${process.env?.AUTH_0_AUDIENCE}/images/${imagePath}`;
+      fetchImage(url);
+    }
   }, []);
 
   return (
@@ -64,9 +75,8 @@ const Image: NextPage<ImageProps> = ({ url, accessToken }) => {
 };
 
 export interface ImageProps {
-  url?: any;
-  accessToken?: any;
-  image?: any;
+  accessToken: string;
+  image: string;
   errorMessage?: string;
 }
 
@@ -75,15 +85,6 @@ export interface State {
     accessToken: string;
   };
 }
-
-Image.getInitialProps = async (context: NextPageContext) => {
-  if (context.query.path) {
-    const imagePath = context.query.path.toString().replace('.jpg', '').replace('/', '__');
-    const url = `${process.env.AUTH_0_AUDIENCE}/images/${imagePath}`;
-    return { url };
-  }
-  return {};
-};
 
 const mapStateToProps = (state: State) => {
   return {
